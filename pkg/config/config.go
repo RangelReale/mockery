@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"reflect"
 	"regexp"
 	"strings"
@@ -62,6 +63,7 @@ type Config struct {
 	Outpkg               string                 `mapstructure:"outpkg"`
 	Output               string                 `mapstructure:"output"`
 	Packageprefix        string                 `mapstructure:"packageprefix"`
+	Includes             []string               `mapstructure:"includes"`
 	Packages             map[string]interface{} `mapstructure:"packages"`
 	Print                bool                   `mapstructure:"print"`
 	Profile              string                 `mapstructure:"profile"`
@@ -122,6 +124,16 @@ func NewConfigFromViper(v *viper.Viper) (*Config, error) {
 
 func (c *Config) Initialize(ctx context.Context) error {
 	log := zerolog.Ctx(ctx)
+
+	for _, inc := range c.Includes {
+		finclude := filepath.Join(filepath.Dir(c.Config), inc)
+		fmt.Println(finclude)
+		err := c.loadInclude(finclude)
+		if err != nil {
+			return err
+		}
+	}
+
 	if err := c.discoverRecursivePackages(ctx); err != nil {
 		return fmt.Errorf("failed to discover recursive packages: %w", err)
 	}
@@ -130,6 +142,22 @@ func (c *Config) Initialize(ctx context.Context) error {
 	if err := c.mergeInConfig(ctx); err != nil {
 		return err
 	}
+	return nil
+}
+
+func (c *Config) loadInclude(filename string) error {
+	f, err := os.Open(filename)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	var ic Config
+
+	if err := yaml.NewDecoder(f).Decode(&ic); err != nil {
+		return stackerr.NewStackErrf(err, "failed to include unmarshal yaml")
+	}
+
 	return nil
 }
 

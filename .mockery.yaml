@@ -14,6 +14,8 @@ _anchors: &inpackage_config
   outpkg: "{{.PackageName}}_test"
   filename: "mock_{{.InterfaceNameSnake}}_test.go"
   inpackage: False
+includes:
+  - 'pkg/fixtures/method_args/.mockery.include.yaml'
 packages:
   github.com/vektra/mockery/v2/pkg/fixtures/buildtag/comment:
     config:
