@@ -16,6 +16,15 @@ import (
 	"golang.org/x/tools/go/packages"
 )
 
+// typNamedOrAlias matches types.Named and types.Alias
+type typNamedOrAlias interface {
+	types.Type
+	Obj() *types.TypeName
+	Underlying() types.Type
+	TypeParams() *types.TypeParamList
+	TypeArgs() *types.TypeList
+}
+
 type fileEntry struct {
 	fileName         string
 	pkg              *packages.Package
@@ -247,7 +256,7 @@ func (p *Parser) packageInterfaces(
 			continue
 		}
 
-		typ, ok := obj.Type().(*types.Named)
+		typ, ok := obj.Type().(typNamedOrAlias)
 		if !ok {
 			continue
 		}
@@ -305,7 +314,7 @@ type Interface struct {
 	FileName        string
 	File            *ast.File
 	Pkg             TypesPackage
-	NamedType       *types.Named
+	NamedType       typNamedOrAlias
 	IsFunction      bool             // If true, this instance represents a function, otherwise it's an interface.
 	ActualInterface *types.Interface // Holds the actual interface type, in case it's an interface.
 	SingleFunction  *Method          // Holds the function type information, in case it's a function type.
@@ -381,6 +390,8 @@ func (nv *NodeVisitor) Visit(node ast.Node) ast.Visitor {
 			}
 			nv.add(nv.ctx, n)
 		case *ast.InterfaceType, *ast.IndexExpr, *ast.IndexListExpr:
+			nv.add(nv.ctx, n)
+		case *ast.SelectorExpr:
 			nv.add(nv.ctx, n)
 		default:
 			log.Debug().Msg("found node with unacceptable type for mocking. Rejecting.")
