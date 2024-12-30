@@ -61,6 +61,9 @@ func NewParser(buildTags []string, opts ...func(*Parser)) *Parser {
 		packages.NeedName |
 		packages.NeedFiles |
 		packages.NeedCompiledGoFiles
+	conf.Logf = func(format string, args ...interface{}) {
+		log.Trace().Str("system", "packages").Msgf(format, args...)
+	}
 
 	if len(buildTags) > 0 {
 		conf.BuildFlags = []string{"-tags", strings.Join(buildTags, ",")}
