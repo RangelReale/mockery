@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/vektra/mockery/v2/pkg/logging"
 	"golang.org/x/tools/go/packages"
 )
@@ -80,7 +81,13 @@ func (p *Parser) loadPackages(fpath string) ([]*packages.Package, error) {
 	if result, ok := p.packageLoadCache[filepath.Dir(fpath)]; ok {
 		return result.pkgs, result.err
 	}
+	log.Trace().
+		Str("fpath", fpath).
+		Msg("Parsing packages from file")
 	pkgs, err := packages.Load(&p.conf, "file="+fpath)
+	log.Trace().
+		Str("fpath", fpath).
+		Msg("Parsed packages from file")
 	p.packageLoadCache[fpath] = packageLoadEntry{pkgs, err}
 	return pkgs, err
 }
@@ -88,10 +95,16 @@ func (p *Parser) loadPackages(fpath string) ([]*packages.Package, error) {
 func (p *Parser) ParsePackages(ctx context.Context, packageNames []string) error {
 	log := zerolog.Ctx(ctx)
 
+	log.Trace().
+		Strs("packageNames", packageNames).
+		Msg("Parsing packages")
 	packages, err := packages.Load(&p.conf, packageNames...)
 	if err != nil {
 		return err
 	}
+	log.Trace().
+		Int("packages", len(packages)).
+		Msgf("Parsed packages")
 	for _, pkg := range packages {
 		if len(pkg.GoFiles) == 0 {
 			continue
