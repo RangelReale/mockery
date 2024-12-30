@@ -75,7 +75,7 @@ func GetLogger(levelStr string) (zerolog.Logger, error) {
 	out := os.Stderr
 	writer := zerolog.ConsoleWriter{
 		Out:        out,
-		TimeFormat: time.RFC822,
+		TimeFormat: time.RFC3339Nano,
 	}
 	if !term.IsTerminal(int(out.Fd())) || os.Getenv("TERM") == "dumb" { //nolint:gosec
 		writer.NoColor = true
