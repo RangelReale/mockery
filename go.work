@@ -4,4 +4,5 @@ use (
 	.
 	./internal/fixtures/example_project/pkg_with_submodules
 	./tools
+	./debug
 )

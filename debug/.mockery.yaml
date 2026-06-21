@@ -1,0 +1,65 @@
+dir: '{{.InterfaceDir}}/mocks'
+log-level: warn
+structname: '{{.InterfaceName}}'
+pkgname: mocks
+filename: mocks.go
+template: testify
+template-data:
+  unroll-variadic: true
+packages:
+  go.temporal.io/sdk/client:
+    config:
+      dir: ./mocks
+      replace-type:
+        go.temporal.io/sdk/internal:
+          ClientCountActivitiesOptions:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: CountActivitiesOptions
+          ClientCountActivitiesResult:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: CountActivitiesResult
+          ClientCountNexusOperationsOptions:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: CountNexusOperationsOptions
+          ClientCountNexusOperationsResult:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: CountNexusOperationsResult
+          ClientStartActivityOptions:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: StartActivityOptions
+          ClientActivityHandle:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: ActivityHandle
+          ClientGetActivityHandleOptions:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: GetActivityHandleOptions
+          ClientGetNexusOperationHandleOptions:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: GetNexusOperationHandleOptions
+          ClientNexusOperationHandle:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: NexusOperationHandle
+          ClientListActivitiesOptions:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: ListActivitiesOptions
+          ClientListActivitiesResult:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: ListActivitiesResult
+          ClientListNexusOperationsOptions:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: ListNexusOperationsOptions
+          ClientListNexusOperationsResult:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: ListNexusOperationsResult
+          ClientNexusClientOptions:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: NexusClientOptions
+          ClientNexusClient:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: NexusClient
+          WorkflowRunGetOptions:
+            pkg-path: go.temporal.io/sdk/client
+            type-name: WorkflowRunGetOptions
+    interfaces:
+      Client: {}
+      WorkflowRun: {}
