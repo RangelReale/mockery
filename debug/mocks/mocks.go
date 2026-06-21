@@ -13,7 +13,6 @@ import (
 	"go.temporal.io/api/workflowservice/v1"
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/converter"
-	"go.temporal.io/sdk/internal"
 )
 
 // NewWorkflowRun creates a new instance of WorkflowRun. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
@@ -189,7 +188,7 @@ func (_c *WorkflowRun_GetRunID_Call) RunAndReturn(run func() string) *WorkflowRu
 }
 
 // GetWithOptions provides a mock function for the type WorkflowRun
-func (_mock *WorkflowRun) GetWithOptions(ctx context.Context, valuePtr interface{}, options internal.WorkflowRunGetOptions) error {
+func (_mock *WorkflowRun) GetWithOptions(ctx context.Context, valuePtr interface{}, options client.WorkflowRunGetOptions) error {
 	ret := _mock.Called(ctx, valuePtr, options)
 
 	if len(ret) == 0 {
@@ -197,7 +196,7 @@ func (_mock *WorkflowRun) GetWithOptions(ctx context.Context, valuePtr interface
 	}
 
 	var r0 error
-	if returnFunc, ok := ret.Get(0).(func(context.Context, interface{}, internal.WorkflowRunGetOptions) error); ok {
+	if returnFunc, ok := ret.Get(0).(func(context.Context, interface{}, client.WorkflowRunGetOptions) error); ok {
 		r0 = returnFunc(ctx, valuePtr, options)
 	} else {
 		r0 = ret.Error(0)
@@ -213,12 +212,12 @@ type WorkflowRun_GetWithOptions_Call struct {
 // GetWithOptions is a helper method to define mock.On call
 //   - ctx context.Context
 //   - valuePtr interface{}
-//   - options internal.WorkflowRunGetOptions
+//   - options client.WorkflowRunGetOptions
 func (_e *WorkflowRun_Expecter) GetWithOptions(ctx any, valuePtr any, options any) *WorkflowRun_GetWithOptions_Call {
 	return &WorkflowRun_GetWithOptions_Call{Call: _e.mock.On("GetWithOptions", ctx, valuePtr, options)}
 }
 
-func (_c *WorkflowRun_GetWithOptions_Call) Run(run func(ctx context.Context, valuePtr interface{}, options internal.WorkflowRunGetOptions)) *WorkflowRun_GetWithOptions_Call {
+func (_c *WorkflowRun_GetWithOptions_Call) Run(run func(ctx context.Context, valuePtr interface{}, options client.WorkflowRunGetOptions)) *WorkflowRun_GetWithOptions_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		var arg0 context.Context
 		if args[0] != nil {
@@ -228,9 +227,9 @@ func (_c *WorkflowRun_GetWithOptions_Call) Run(run func(ctx context.Context, val
 		if args[1] != nil {
 			arg1 = args[1].(interface{})
 		}
-		var arg2 internal.WorkflowRunGetOptions
+		var arg2 client.WorkflowRunGetOptions
 		if args[2] != nil {
-			arg2 = args[2].(internal.WorkflowRunGetOptions)
+			arg2 = args[2].(client.WorkflowRunGetOptions)
 		}
 		run(
 			arg0,
@@ -246,7 +245,7 @@ func (_c *WorkflowRun_GetWithOptions_Call) Return(err error) *WorkflowRun_GetWit
 	return _c
 }
 
-func (_c *WorkflowRun_GetWithOptions_Call) RunAndReturn(run func(ctx context.Context, valuePtr interface{}, options internal.WorkflowRunGetOptions) error) *WorkflowRun_GetWithOptions_Call {
+func (_c *WorkflowRun_GetWithOptions_Call) RunAndReturn(run func(ctx context.Context, valuePtr interface{}, options client.WorkflowRunGetOptions) error) *WorkflowRun_GetWithOptions_Call {
 	_c.Call.Return(run)
 	return _c
 }

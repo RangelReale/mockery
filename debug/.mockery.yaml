@@ -62,4 +62,10 @@ packages:
             type-name: WorkflowRunGetOptions
     interfaces:
       Client: {}
-      WorkflowRun: {}
+      WorkflowRun:
+        config:
+          replace-type:
+            go.temporal.io/sdk/internal:
+              WorkflowRunGetOptions:
+                pkg-path: go.temporal.io/sdk/client
+                type-name: WorkflowRunGetOptions
